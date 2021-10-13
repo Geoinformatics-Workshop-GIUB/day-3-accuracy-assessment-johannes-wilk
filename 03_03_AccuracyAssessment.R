@@ -2,7 +2,7 @@
 
 #Import files
 img.classified <- raster("RF_classification.tif")
-shp.train <- shapefile("training_data.shp")
+shp.train <- shapefile("training_data2.shp")
 shp.valid <- shapefile("RF_validation.shp")
 
 #Access validclass-column of shp.valid, transfer it to factors
@@ -33,8 +33,8 @@ OA
 accmat.ext <- addmargins(accmat)
 accmat.ext <- rbind(accmat.ext, "Users" = c(PA, NA))
 accmat.ext <- cbind(accmat.ext, "Producers" = c(UA, NA, OA))
-colnames(accmat.ext) <- c(levels(as.factor(shp.train$class)), "Sum", "PA")
-rownames(accmat.ext) <- c(levels(as.factor(shp.train$class)), "Sum", "UA")
+colnames(accmat.ext) <- c(levels(as.factor(shp.train$Class)), "Sum", "PA")
+rownames(accmat.ext) <- c(levels(as.factor(shp.train$Class)), "Sum", "UA")
 accmat.ext <- round(accmat.ext, digits = 1)
 dimnames(accmat.ext) <- list("Prediction" = colnames(accmat.ext),
                              "Reference" = rownames(accmat.ext))
@@ -73,13 +73,13 @@ kappa(accmat)
 
 #Import files
 img.classified <- raster("RF_classification.tif")
-shp.train <- shapefile("training_data.shp")
+shp.train <- shapefile("training_data2.shp")
 shp.valid <- shapefile("RF_validation.shp")
 
 #Create regular accuracy matrix 
 confmat <- table(as.factor(extract(img.classified, shp.valid)), as.factor(shp.valid$validclass))
 
-#Get number of pixels per class and convert in km²
+#Get number of pixels per class and convert in km?
 imgVal <- as.factor(getValues(img.classified))
 nclass <- length(unique(shp.train$class))
 maparea <- sapply(1:nclass, function(x) sum(imgVal == x))
@@ -135,6 +135,7 @@ PA_CI <- conf * sqrt(1 / N_j ^ 2 * (maparea ^ 2 * ( 1 - PA ) ^ 2 * UA * (1 - UA)
 result <- matrix(c(p_area, p_area_CI, PA * 100, PA_CI * 100, UA * 100, UA_CI * 100, c(OA * 100, rep(NA, nclass-1)), c(OA_CI * 100, rep(NA, nclass-1))), nrow = nclass)
 result <- round(result, digits = 2) 
 rownames(result) <- levels(as.factor(shp.train$class))
-colnames(result) <- c("km²", "km²±", "PA", "PA±", "UA", "UA±", "OA", "OA±")
+colnames(result) <- c("km?", "km??", "PA", "PA?", "UA", "UA?", "OA", "OA?")
 class(result) <- "table"
 result
+

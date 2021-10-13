@@ -4,10 +4,12 @@
 library(raster)
 
 #Import RF-Classification
+setwd("C:/Users/Johannes/Documents/1. Dokumente/3. Studium/2. Uni Bonn/1. Module/D2 R Kurs")
+getwd()
 img.classified <- raster("RF_classification.tif")
 
 smp.test <- sampleStratified(x = img.classified,
-                             size = 50,
+                             size = 30,
                              na.rm = TRUE,
                              sp = TRUE)
 
@@ -26,6 +28,8 @@ smp.test$ID <- 1:nrow(smp.test)
 
 #Check out attributes of smp.test
 smp.test
+
+mycolors <- c("#fbf793", "#006601", "#bfe578", "#d00000", "#6569ff")
 
 #Plot distribution of sampling on top of classification map
 plot(img.classified, 
